@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html ng-app="subscriptionApp">
+<head>
+    <title>Subscription Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="subscription.js"></script>
+</head>
+<body ng-controller="SubscriptionController" class="bg-light">
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Subscription Management</h1>
+
+    <!-- Add New Subscription -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Add New Subscription</h5>
+        </div>
+        <div class="card-body">
+            <form ng-submit="addSubscription()">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Select Product</label>
+                        <select class="form-select" ng-model="newSubscription.product" ng-options="prod.id as prod.name + ' (' + prod.category.name + ')' for prod in products" required>
+                            <option value="">Select Product</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Select Plan</label>
+                        <select class="form-select" ng-model="newSubscription.plan" required>
+                            <option value="">Select Plan</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Quarterly">Quarterly</option>
+                            <option value="Half-Yearly">Half-Yearly</option>
+                            <option value="Yearly">Yearly</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mt-3">Add Subscription</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Subscription Table -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Plan</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="sub in subscriptions">
+                        <td>{{ $index + 1 }}</td>
+                        <td>
+                            <span ng-hide="sub.editing">{{ sub.product_name }}</span>
+                            <select class="form-select form-select-sm" ng-model="sub.product" ng-options="prod.id as prod.name + ' (' + prod.category.name + ')' for prod in products" ng-show="sub.editing">
+                                <option value="">Select Product</option>
+                            </select>
+                        </td>
+                        <td>{{ sub.category_name }}</td>
+                        <td>
+                            <span ng-hide="sub.editing">{{ sub.plan }}</span>
+                            <select class="form-select form-select-sm" ng-model="sub.plan" ng-show="sub.editing">
+                                <option value="">Select Plan</option>
+                                <option value="Monthly">Monthly</option>
+                                <option value="Quarterly">Quarterly</option>
+                                <option value="Half-Yearly">Half-Yearly</option>
+                                <option value="Yearly">Yearly</option>
+                            </select>
+                        </td>
+                        <td>
+                            <div ng-hide="sub.editing">
+                                <button class="btn btn-sm btn-outline-primary" ng-click="editSubscription(sub)">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger" ng-click="deleteSubscription(sub)">Delete</button>
+                            </div>
+                            <div ng-show="sub.editing">
+                                <button class="btn btn-sm btn-success" ng-click="saveSubscription(sub)">Save</button>
+                                <button class="btn btn-sm btn-secondary" ng-click="cancelEdit(sub)">Cancel</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

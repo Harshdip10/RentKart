@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html ng-app="categoryApp">
+<head>
+    <title>Category Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="category.js"></script>
+</head>
+<body ng-controller="CategoryController" class="bg-light">
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center">Category Management</h1>
+
+        <!-- Add New Category -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Add New Category</h5>
+            </div>
+            <div class="card-body">
+                <form ng-submit="addCategory()">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Category Name</label>
+                            <input type="text" class="form-control" ng-model="newCategory.name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-control" ng-model="newCategory.description" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mt-3">Add Category</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Categories Table -->
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="category in categories">
+                            <td>{{ $index + 1 }}</td>
+                            <td>
+                                <span ng-hide="category.editing">{{ category.name }}</span>
+                                <input type="text" class="form-control form-control-sm" ng-model="category.name" ng-show="category.editing">
+                            </td>
+                            <td>
+                                <span ng-hide="category.editing">{{ category.description }}</span>
+                                <input type="text" class="form-control form-control-sm" ng-model="category.description" ng-show="category.editing">
+                            </td>
+                            <td>
+                                <div ng-hide="category.editing">
+                                    <button class="btn btn-sm btn-outline-primary" ng-click="editCategory(category)">Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger" ng-click="deleteCategory(category)">Delete</button>
+                                </div>
+                                <div ng-show="category.editing">
+                                    <button class="btn btn-sm btn-success" ng-click="saveCategory(category)">Save</button>
+                                    <button class="btn btn-sm btn-secondary" ng-click="cancelEdit(category)">Cancel</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

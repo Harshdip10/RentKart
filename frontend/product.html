@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html ng-app="productApp">
+<head>
+    <title>Product Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="product.js"></script>
+    <style>
+        .product-thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .product-thumbnail:hover {
+            transform: scale(1.1);
+            border-color: #0d6efd;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .no-image-placeholder {
+            width: 80px;
+            height: 80px;
+            background: #f8f9fa;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 2px dashed #ddd;
+            color: #adb5bd;
+        }
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .image-modal-preview {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+        }
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+        .file-input-label {
+            display: inline-block;
+            cursor: pointer;
+            padding: 8px 16px;
+            background: #0d6efd;
+            color: white;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .file-input-label:hover {
+            background: #0b5ed7;
+        }
+    </style>
+</head>
+<body ng-controller="ProductController" class="bg-light">
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center">Product Management</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            
+                    </div>
+
+        <!-- Add New Product Card -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Add New Product</h5>
+            </div>
+            <div class="card-body">
+                <form ng-submit="addProduct()" name="addProductForm">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Product Name *</label>
+                            <input type="text" class="form-control" ng-model="newProduct.name" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Description *</label>
+                            <input type="text" class="form-control" ng-model="newProduct.description" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label fw-bold">MRP (₹) *</label>
+                            <input type="number" step="0.01" class="form-control" ng-model="newProduct.mrp" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label fw-bold">Category *</label>
+                            <select class="form-select" ng-model="newProduct.category" ng-options="cat.id as cat.name for cat in categories" required>
+                                <option value="">Select</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label fw-bold d-block">&nbsp;</label>
+                            <button type="submit" class="btn btn-primary w-100" ng-disabled="addProductForm.$invalid">
+                                <i class="fas fa-plus"></i> Add Product
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Image Upload Section for New Product -->
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Product Image (Optional)</label>
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="file-input-wrapper">
+                                    <input type="file" 
+                                           id="newProductImage" 
+                                           accept="image/*"
+                                           onchange="angular.element(this).scope().handleNewProductImage(this.files)">
+                                    <label for="newProductImage" class="file-input-label">
+                                        <i class="fas fa-upload"></i> Choose Image
+                                    </label>
+                                </div>
+                                <div ng-if="newProductImagePreview">
+                                    <img ng-src="{{newProductImagePreview}}" class="image-preview" alt="Preview">
+                                    <button type="button" class="btn btn-sm btn-danger d-block mt-2" ng-click="removeNewProductImage()">
+                                        <i class="fas fa-times"></i> Remove
+                                    </button>
+                                </div>
+                                <small class="text-muted align-self-center" ng-if="!newProductImagePreview">
+                                    <i class="fas fa-info-circle"></i> JPG, PNG or GIF. Max 5MB
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Products Table -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0"><i class="fas fa-list"></i> All Products</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>MRP</th>
+                                <th>Category</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="product in products">
+                                <td>{{ $index + 1 }}</td>
+                                <td>
+                                    <!-- Display Mode -->
+                                    <div ng-hide="product.editing">
+                                        <img ng-if="product.image_url" 
+                                             ng-src="{{product.image_url}}" 
+                                             class="product-thumbnail" 
+                                             alt="{{product.name}}"
+                                             ng-click="viewImage(product)"
+                                             title="Click to view full image">
+                                        <div ng-if="!product.image_url" class="no-image-placeholder" title="No image">
+                                            <i class="fas fa-image fa-2x"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Edit Mode - Image Upload -->
+                                    <div ng-show="product.editing">
+                                        <div ng-if="product.image_url && !product.newImagePreview" class="mb-2">
+                                            <img ng-src="{{product.image_url}}" class="product-thumbnail" alt="Current">
+                                            <div class="mt-1">
+                                                <small class="text-muted">Current</small>
+                                            </div>
+                                        </div>
+                                        <div ng-if="product.newImagePreview" class="mb-2">
+                                            <img ng-src="{{product.newImagePreview}}" class="product-thumbnail" alt="New">
+                                            <div class="mt-1">
+                                                <small class="text-success">New Image</small>
+                                            </div>
+                                        </div>
+                                        <div class="file-input-wrapper">
+                                            <input type="file" 
+                                                   id="editImage{{product.id}}" 
+                                                   accept="image/*"
+                                                   onchange="angular.element(this).scope().handleEditImage(this.files, this.dataset.index)"
+                                                   data-index="{{$index}}">
+                                            <label for="editImage{{product.id}}" class="file-input-label btn-sm">
+                                                <i class="fas fa-upload"></i> {{product.image_url ? 'Change' : 'Upload'}}
+                                            </label>
+                                        </div>
+                                        <button ng-if="product.newImageFile || product.image_url" 
+                                                type="button" 
+                                                class="btn btn-sm btn-outline-danger mt-1" 
+                                                ng-click="removeEditImage(product)">
+                                            <i class="fas fa-trash"></i> Remove
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span ng-hide="product.editing" class="fw-bold">{{ product.name }}</span>
+                                    <input type="text" class="form-control form-control-sm" ng-model="product.name" ng-show="product.editing">
+                                </td>
+                                <td>
+                                    <span ng-hide="product.editing">{{ product.description }}</span>
+                                    <textarea class="form-control form-control-sm" ng-model="product.description" ng-show="product.editing" rows="2"></textarea>
+                                </td>
+                                <td>
+                                    <span ng-hide="product.editing" class="badge bg-success">{{ product.mrp | currency:"₹" }}</span>
+                                    <input type="number" step="0.01" class="form-control form-control-sm" ng-model="product.mrp" ng-show="product.editing">
+                                </td>
+                                <td>
+                                    <span ng-hide="product.editing">{{ getCategoryName(product.category) }}</span>
+                                    <select class="form-select form-select-sm" ng-model="product.category" ng-options="cat.id as cat.name for cat in categories" ng-show="product.editing">
+                                        <option value="">Select</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div ng-hide="product.editing" class="btn-group">
+                                        <button class="btn btn-sm btn-outline-primary" ng-click="editProduct(product)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" ng-click="deleteProduct(product)" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                    <div ng-show="product.editing" class="btn-group">
+                                        <button class="btn btn-sm btn-success" ng-click="saveProduct(product)">
+                                            <i class="fas fa-save"></i> Save
+                                        </button>
+                                        <button class="btn btn-sm btn-secondary" ng-click="cancelEdit(product)">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-if="products.length === 0" class="text-center py-5 text-muted">
+                    <i class="fas fa-box-open fa-3x mb-3"></i>
+                    <p>No products added yet. Add your first product above!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Preview Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{selectedProduct.name}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center bg-dark">
+                    <img ng-src="{{selectedProduct.image_url}}" class="image-modal-preview" alt="{{selectedProduct.name}}">
+                </div>
+                <div class="modal-footer">
+                    <div class="me-auto">
+                        <small class="text-muted">
+                            <strong>Category:</strong> {{getCategoryName(selectedProduct.category)}} | 
+                            <strong>MRP:</strong> {{selectedProduct.mrp | currency:"₹"}}
+                        </small>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

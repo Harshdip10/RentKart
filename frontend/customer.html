@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html ng-app="customerApp">
+<head>
+    <title>Customer Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="customer.js"></script>
+</head>
+<body ng-controller="CustomerController" class="bg-light">
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center">Customer Management</h1>
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Add New Customer</h5>
+            </div>
+            <div class="card-body">
+                <form ng-submit="addCustomer()">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" ng-model="newCustomer.name" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" ng-model="newCustomer.email" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Phone</label>
+                            <input type="text" class="form-control" ng-model="newCustomer.phone" required pattern="[0-9]{10}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" ng-model="newCustomer.address" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" ng-model="newCustomer.password" placeholder="Min 8 characters" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mt-3">Add Customer</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Password</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="customer in customers">
+                            <td>{{ $index + 1 }}</td>
+                            <td>
+                                <span ng-hide="customer.editing">{{ customer.name }}</span>
+                                <input type="text" class="form-control form-control-sm" ng-model="customer.name" ng-show="customer.editing">
+                            </td>
+                            <td>
+                                <span ng-hide="customer.editing">{{ customer.email }}</span>
+                                <input type="email" class="form-control form-control-sm" ng-model="customer.email" ng-show="customer.editing">
+                            </td>
+                            <td>
+                                <span ng-hide="customer.editing">{{ customer.phone }}</span>
+                                <input type="text" class="form-control form-control-sm" ng-model="customer.phone" ng-show="customer.editing">
+                            </td>
+                            <td>
+                                <span ng-hide="customer.editing">{{ customer.address }}</span>
+                                <input type="text" class="form-control form-control-sm" ng-model="customer.address" ng-show="customer.editing">
+                            </td>
+                            <td>
+                                <span ng-hide="customer.editing" class="text-muted">••••••••</span>
+                                <input type="password" class="form-control form-control-sm"
+                                  ng-model="customer.password"
+                                    ng-show="customer.editing"
+                                    placeholder="Leave blank to keep same">
+                            </td>
+                            <td>
+                                <div ng-hide="customer.editing">
+                                    <button class="btn btn-sm btn-outline-primary" ng-click="editCustomer(customer)">Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger" ng-click="deleteCustomer(customer)">Delete</button>
+                                </div>
+                                <div ng-show="customer.editing">
+                                    <button class="btn btn-sm btn-success" ng-click="saveCustomer(customer)">Save</button>
+                                    <button class="btn btn-sm btn-secondary" ng-click="cancelEdit(customer)">Cancel</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
