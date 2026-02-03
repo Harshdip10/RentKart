@@ -1,0 +1,341 @@
+<div class="container py-4">
+    <!-- Action Buttons (Print/Download - Hide on Print) -->
+    <div class="no-print mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="#!/my-rentals" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Rentals
+            </a>
+            <div>
+                <button class="btn btn-primary me-2" ng-click="printInvoice()">
+                    <i class="fas fa-print me-2"></i>Print Invoice
+                </button>
+                <button class="btn btn-success" ng-click="downloadInvoice()">
+                    <i class="fas fa-download me-2"></i>Download PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Content -->
+    <div class="invoice-container">
+        <!-- Invoice Header -->
+        <div class="invoice-header">
+            <div class="row align-items-center mb-4">
+                <div class="col-md-6">
+                    <h1 class="company-name mb-2">
+                        <i class="fas fa-home-heart text-primary"></i> RentKart
+                    </h1>
+                    <p class="text-muted mb-0">Your Premium Rental Solution</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h2 class="invoice-title mb-2">INVOICE</h2>
+                    <p class="mb-0"><strong>Invoice #:</strong> {{invoice.invoice_number}}</p>
+                    <p class="mb-0"><strong>Order ID:</strong> {{invoice.order_id}}</p>
+                    <p class="mb-0"><strong>Date:</strong> {{invoice.order_date | date:'dd MMM yyyy'}}</p>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Company & Customer Details -->
+            <div class="row mb-4">
+                <!-- From (Company) -->
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold mb-3">From:</h5>
+                    <div class="company-details">
+                        <p class="mb-1"><strong>RentKart Private Limited</strong></p>
+                        <p class="mb-1">ITP CYPRESS, HINJEWADI</p>
+                        <p class="mb-1">Pune, Maharashtra 411057</p>
+                        <p class="mb-1">GSTIN: 27AABCU9603R1ZM</p>
+                        <p class="mb-1">Email: billing@rentkart.com</p>
+                        <p class="mb-0">Phone: +91 1800-123-4567</p>
+                    </div>
+                </div>
+
+                <!-- To (Customer) -->
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold mb-3">Bill To:</h5>
+                    <div class="customer-details">
+                        <p class="mb-1"><strong>{{invoice.customer_name}}</strong></p>
+                        <p class="mb-1">Customer ID: #{{invoice.customer_id}}</p>
+                        <p class="mb-1">Email: {{invoice.customer_email}}</p>
+                        <p class="mb-0">Phone: {{invoice.customer_phone}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rental Period -->
+        <div class="rental-period-section mb-4">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="info-box">
+                        <div class="info-label">Rental Start Date</div>
+                        <div class="info-value">{{invoice.start_date | date:'dd MMM yyyy'}}</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="info-box">
+                        <div class="info-label">Rental End Date</div>
+                        <div class="info-value">{{invoice.end_date | date:'dd MMM yyyy'}}</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="info-box">
+                        <div class="info-label">Rental Duration</div>
+                        <div class="info-value">{{invoice.duration}} Months</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoice Items Table -->
+        <div class="invoice-items mb-4">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th width="5%">#</th>
+                        <th width="40%">Product / Service Description</th>
+                        <th width="15%" class="text-center">Plan</th>
+                        <th width="10%" class="text-end">Rate/Month</th>
+                        <th width="10%" class="text-center">Duration</th>
+                        <th width="20%" class="text-end">Amount (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <strong>{{invoice.product_name}}</strong>
+                            <br>
+                            <small class="text-muted">Product ID: #{{invoice.product_id}}</small>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge bg-info">{{invoice.plan_name}}</span>
+                        </td>
+                        <td class="text-end">₹{{invoice.price | number:2}}</td>
+                        <td class="text-center">{{invoice.duration}} months</td>
+                        <td class="text-end"><strong>₹{{subtotal | number:2}}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Invoice Totals -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <!-- Payment Info -->
+                <div class="payment-info">
+                    <h6 class="fw-bold mb-3">Payment Information:</h6>
+                    <p class="mb-1"><strong>Payment Method:</strong> Online Payment</p>
+                    <p class="mb-1"><strong>Payment Status:</strong> 
+                        <span class="badge bg-success">Paid</span>
+                    </p>
+                    <p class="mb-1"><strong>Transaction ID:</strong> TXN{{invoice.order_id}}</p>
+                    <p class="mb-0"><strong>Payment Date:</strong> {{invoice.order_date | date:'dd MMM yyyy'}}</p>
+                </div>
+
+                <!-- Terms & Conditions -->
+                <div class="terms-section mt-4">
+                    <h6 class="fw-bold mb-2">Terms & Conditions:</h6>
+                    <ul class="small text-muted ps-3">
+                        <li>Rental period starts from the delivery date</li>
+                        <li>Free delivery and installation included</li>
+                        <li>24/7 maintenance support provided</li>
+                        <li>Products must be returned in original condition</li>
+                        <li>Damage charges may apply for misuse</li>
+                        <li>Refund policy: As per rental agreement</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="totals-section">
+                    <table class="table table-sm">
+                        <tbody>
+                            <tr>
+                                <td class="text-end"><strong>Subtotal:</strong></td>
+                                <td class="text-end" width="30%">₹{{subtotal | number:2}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-end">
+                                    <strong>GST (18%):</strong>
+                                    <br>
+                                    <small class="text-muted">CGST: 9% | SGST: 9%</small>
+                                </td>
+                                <td class="text-end">₹{{gst | number:2}}</td>
+                            </tr>
+                            <tr class="table-active">
+                                <td class="text-end"><h5 class="mb-0">Grand Total:</h5></td>
+                                <td class="text-end"><h5 class="mb-0 text-primary">₹{{grandTotal | number:2}}</h5></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="text-end">
+                                    <small class="text-muted">Amount in words: 
+                                        <strong>Rupees {{grandTotal | number:0}} Only</strong>
+                                    </small>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Details -->
+        <div class="services-included mt-4 mb-4">
+            <h6 class="fw-bold mb-3">Services Included:</h6>
+            <div class="row">
+                <div class="col-md-3 col-sm-6 mb-2">
+                    <i class="fas fa-check-circle text-success me-2"></i>Free Delivery
+                </div>
+                <div class="col-md-3 col-sm-6 mb-2">
+                    <i class="fas fa-check-circle text-success me-2"></i>Free Installation
+                </div>
+                <div class="col-md-3 col-sm-6 mb-2">
+                    <i class="fas fa-check-circle text-success me-2"></i>Free Maintenance
+                </div>
+                <div class="col-md-3 col-sm-6 mb-2">
+                    <i class="fas fa-check-circle text-success me-2"></i>Damage Protection
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="invoice-footer mt-5 pt-4 border-top">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <p class="mb-1"><strong>For any queries, contact us:</strong></p>
+                    <p class="mb-0">
+                        <i class="fas fa-envelope me-2"></i>support@rentease.com<br>
+                        <i class="fas fa-phone me-2"></i>+91 1800-123-4567
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-1"><strong>Authorized Signature</strong></p>
+                    <div class="signature-space"></div>
+                    <p class="mb-0 small text-muted">This is a computer-generated invoice</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thank You Message -->
+        <div class="text-center mt-4 py-3 bg-light rounded">
+            <h5 class="text-primary mb-2">Thank you for choosing RentEase!</h5>
+            <p class="mb-0 text-muted">We appreciate your business and look forward to serving you again.</p>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Print Styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .invoice-container {
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+    
+    body {
+        background: white !important;
+    }
+    
+    .container {
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+}
+
+/* Invoice Styles */
+.invoice-container {
+    background: white;
+    padding: 40px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+.company-name {
+    color: #333;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.invoice-title {
+    color: #4A90E2;
+    font-weight: 700;
+}
+
+.company-details,
+.customer-details {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #4A90E2;
+}
+
+.info-box {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #e9ecef;
+}
+
+.info-label {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.info-value {
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 700;
+}
+
+.totals-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #4A90E2;
+}
+
+.payment-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.signature-space {
+    height: 60px;
+    margin: 10px 0;
+}
+
+.services-included {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.invoice-footer {
+    color: #6c757d;
+}
+
+/* Table Styles */
+.table-bordered {
+    border: 2px solid #dee2e6;
+}
+
+.table thead th {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.table tbody td {
+    vertical-align: middle;
+}
+</style>

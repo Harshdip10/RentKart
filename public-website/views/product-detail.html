@@ -1,0 +1,189 @@
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#!/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#!/categories">Categories</a></li>
+            <li class="breadcrumb-item active">{{product.name}}</li>
+        </ol>
+    </nav>
+
+    <!-- Loading State -->
+    <div ng-if="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Product Detail -->
+    <div ng-if="!loading" class="row">
+        <!-- Product Image -->
+        <div class="col-lg-6 mb-4">
+            <div class="product-detail-image-wrapper">
+                <img ng-if="product.image" 
+                     ng-src="{{product.image}}" 
+                     class="img-fluid rounded shadow" 
+                     alt="{{product.name}}">
+                <div ng-if="!product.image" class="product-detail-placeholder">
+                    <i class="fas fa-image fa-10x text-muted"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-lg-6">
+            <div class="product-detail-info">
+                <span class="badge bg-success mb-3 px-3 py-2">
+                    <i class="fas fa-check-circle me-1"></i> Available for Rent
+                </span>
+                
+                <h1 class="fw-bold mb-3">{{product.name}}</h1>
+                
+                <div class="mb-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="text-warning me-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </span>
+                        <span class="text-muted">(4.5/5 - 127 reviews)</span>
+                    </div>
+                </div>
+
+                <div class="mb-4 pb-4 border-bottom">
+                    <h4 class="text-primary mb-1">MRP ₹{{product.mrp}}<small class="text-muted fs-6"></small></h4>
+                    <!-- <small class="text-muted">Base rental price</small> -->
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-3">Description</h5>
+                    <p class="text-muted">{{product.description || 'High-quality product available for rent. Perfect for your home or office needs. Includes free delivery, installation, and maintenance support.'}}</p>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-3">Key Features</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Free delivery and installation</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 24/7 maintenance support</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Easy exchange and upgrade</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Sanitized and quality checked</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription Plans -->
+    <!-- <div ng-if="!loading" class="mt-5">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Choose Your Rental Plan</h2>
+            <p class="text-muted">Select the duration that works best for you</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-4" ng-repeat="subscription in subscriptions">
+                <div class="card subscription-card h-100" 
+                     ng-class="{'border-primary': selectedSubscription.id === subscription.id}"
+                     ng-click="selectSubscription(subscription)">
+                    <div class="card-body text-center">
+                        <div ng-if="subscription.duration === 12" class="position-absolute top-0 end-0 m-2">
+                            <span class="badge bg-warning">Most Popular</span>
+                        </div>
+                        
+                        <h3 class="fw-bold mb-3">{{subscription.name}}</h3>
+                        
+                        <div class="price-section mb-4">
+                            <h2 class="text-primary fw-bold">₹{{subscription.price}}</h2>
+                            <p class="text-muted mb-0">per month</p>
+                            <small class="text-muted">{{subscription.duration}} months plan</small>
+                        </div>
+
+                        <div class="total-section mb-4 p-3 bg-light rounded">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Total Amount:</span>
+                                <strong>₹{{subscription.price * subscription.duration}}</strong>
+                            </div>
+                            <small class="text-muted">For {{subscription.duration}} months</small>
+                        </div>
+
+                        <ul class="list-unstyled text-start mb-4">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Free Delivery</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Free Installation</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Maintenance Included</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Easy Returns</li>
+                        </ul>
+
+                        <div class="form-check">
+                            <input class="form-check-input" 
+                                   type="radio" 
+                                   name="subscriptionPlan" 
+                                   id="plan-{{subscription.id}}"
+                                   ng-checked="selectedSubscription.id === subscription.id">
+                            <label class="form-check-label" for="plan-{{subscription.id}}">
+                                Select this plan
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Proceed Button -->
+        <!-- <div class="text-center mt-4">
+            <button class="btn btn-primary btn-lg px-5" 
+                    ng-click="proceedToCheckout()"
+                    ng-disabled="!selectedSubscription">
+                <i class="fas fa-shopping-cart me-2"></i>
+                Proceed to Checkout
+            </button>
+            <p class="text-muted mt-2" ng-if="!selectedSubscription">
+                Please select a subscription plan to continue
+            </p>
+        </div> -->
+        <div class="mt-4">
+                    <button class="btn btn-primary btn-lg w-100"
+                            ng-click="proceedToCheckout()">
+                        <i class="fas fa-shopping-cart me-2"></i>
+                        Proceed to Checkout
+                    </button>
+                </div>
+    </div>
+</div>
+
+<style>
+.product-detail-image-wrapper {
+    position: sticky;
+    top: 100px;
+}
+
+.product-detail-placeholder {
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.subscription-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.subscription-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.subscription-card.border-primary {
+    border-width: 3px !important;
+    box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+}
+
+.price-section h2 {
+    font-size: 3rem;
+}
+</style>

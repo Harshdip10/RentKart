@@ -1,0 +1,143 @@
+<section class="contact-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold">Get In Touch</h1>
+            <p class="text-muted lead">We'd love to hear from you. Send us a message!</p>
+        </div>
+
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-7 mb-4">
+                <div class="card border-0 shadow-sm rounded-3 p-4">
+                    <div ng-if="submitted" class="alert alert-success" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Thank you for your message! We'll get back to you soon.
+                    </div>
+
+                    <form name="contactForm" ng-submit="submitContact()" novalidate>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Your Name *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       ng-model="contact.name" 
+                                       name="name"
+                                       required>
+                                <div ng-show="contactForm.name.$touched && contactForm.name.$invalid" class="text-danger small mt-1">
+                                    Name is required
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email Address *</label>
+                                <input type="email" 
+                                       class="form-control" 
+                                       ng-model="contact.email" 
+                                       name="email"
+                                       required>
+                                <div ng-show="contactForm.email.$touched && contactForm.email.$invalid" class="text-danger small mt-1">
+                                    Valid email is required
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" 
+                                   class="form-control" 
+                                   ng-model="contact.phone"
+                                   pattern="[0-9]{10}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Subject *</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   ng-model="contact.subject" 
+                                   name="subject"
+                                   required>
+                            <div ng-show="contactForm.subject.$touched && contactForm.subject.$invalid" class="text-danger small mt-1">
+                                Subject is required
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Message *</label>
+                            <textarea class="form-control" 
+                                      rows="5" 
+                                      ng-model="contact.message" 
+                                      name="message"
+                                      required></textarea>
+                            <div ng-show="contactForm.message.$touched && contactForm.message.$invalid" class="text-danger small mt-1">
+                                Message is required
+                            </div>
+                        </div>
+
+                        <button type="submit" 
+                                class="btn btn-primary w-100" 
+                                ng-disabled="contactForm.$invalid">
+                            <i class="fas fa-paper-plane me-2"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-5 mb-4">
+                <div class="contact-info h-100">
+                    <h3 class="mb-4">Contact Information</h3>
+                    
+                    <div class="contact-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h5>Address</h5>
+                            <p>123 Business Avenue, Tech Park<br>Mumbai, Maharashtra 400001</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h5>Phone</h5>
+                            <p>+91 1800-123-4567<br>Mon-Sat: 9:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h5>Email</h5>
+                            <p>support@rentkart.com<br>info@rentkart.com</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <i class="fas fa-share-alt"></i>
+                        <div>
+                            <h5>Follow Us</h5>
+                            <div class="mt-2">
+                                <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-2x"></i></a>
+                                <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-2x"></i></a>
+                                <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-2x"></i></a>
+                                <a href="#" class="text-white"><i class="fab fa-linkedin fa-2x"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.11609823277!2d72.74109995709658!3d19.082502005986953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c6306644edc1%3A0x5da4ed8f8d648c69!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1642581234567!5m2!1sen!2sin" 
+                            width="100%" 
+                            height="400" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

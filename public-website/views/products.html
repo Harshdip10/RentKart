@@ -1,0 +1,100 @@
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#!/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#!/categories">Categories</a></li>
+            <li class="breadcrumb-item active">{{category.name}}</li>
+        </ol>
+    </nav>
+
+    <!-- Category Header -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">{{category.name}}</h1>
+        <p class="text-muted lead">{{category.description}}</p>
+    </div>
+
+    <!-- Loading State -->
+    <div ng-if="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Loading products...</p>
+    </div>
+
+    <!-- Products Grid -->
+    <div ng-if="!loading && products.length > 0" class="row">
+        <div class="col-md-6 col-lg-4 mb-4" ng-repeat="product in products">
+            <div class="card h-100 shadow-sm product-card">
+                <div class="product-image-wrapper">
+                    <img ng-if="product.image" 
+                         ng-src="{{product.image}}" 
+                         class="card-img-top product-image" 
+                         alt="{{product.name}}">
+                    <div ng-if="!product.image" class="card-img-top product-image-placeholder">
+                        <i class="fas fa-image fa-4x text-muted"></i>
+                    </div>
+                    <span class="badge bg-success position-absolute top-0 end-0 m-3">
+                        Available
+                    </span>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">{{product.name}}</h5>
+                    <p class="card-text text-muted flex-grow-1">{{product.description}}</p>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <small class="text-muted">Starting from</small>
+                            <h4 class="text-primary mb-0">₹{{calculateRent(product.mrp, 'annually') | number:0}}<small class="text-muted fs-6">/mo</small></h4>
+                        </div>
+                        <button class="btn btn-primary" ng-click="viewProductDetail(product.id)">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div ng-if="!loading && products.length === 0" class="text-center py-5">
+        <i class="fas fa-box-open fa-5x text-muted mb-3"></i>
+        <h4>No Products Found</h4>
+        <p class="text-muted">There are no products available in this category.</p>
+        <a href="#!/categories" class="btn btn-primary mt-3">Browse Other Categories</a>
+    </div>
+</div>
+
+<style>
+.product-card {
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2) !important;
+}
+
+.product-image-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.product-image {
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+.product-image-placeholder {
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+}
+</style>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html ng-app="publicApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RentKart - Your Premium Rental Solution</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body ng-controller="MainController">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#!/">
+                <i class="fas fa-home-heart"></i> RentKart
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/categories">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/contact">Contact</a>
+                    </li>
+                    <li class="nav-item" ng-if="!isLoggedIn">
+                        <a class="nav-link btn btn-outline-light ms-2 px-3" href="#!/login">Login</a>
+                    </li>
+                    <li class="nav-item dropdown" ng-if="isLoggedIn">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i> {{currentUser.name}}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#!/profile">My Profile</a></li>
+                            <li><a class="dropdown-item" href="#!/my-rentals">My Rentals</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" ng-click="logout()">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div ng-view class="main-content"></div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white pt-5 pb-3">
+    <div class="container">
+        <div class="row">
+
+            <!-- Brand -->
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold mb-3">
+                    <i class="fas fa-home-heart"></i> RentKart
+                </h5>
+                <p class="text-muted">
+                    Your trusted partner for premium furniture and appliance rentals.
+                    Quality products, flexible terms, hassle-free service.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold mb-3">Quick Links</h5>
+                <ul class="list-unstyled footer-links">
+                    <li><a href="#!/categories">Categories</a></li>
+                    <li><a href="#!/about">About Us</a></li>
+                    <li><a href="#!/contact">Contact</a></li>
+                    <li><a href="#!/login">Login</a></li>
+                </ul>
+            </div>
+
+            <!-- Social + Contact -->
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold mb-3">Connect With Us</h5>
+
+                <div class="social-icons mb-3">
+                    <a href="https://www.facebook.com/" class="me-3"><i class="fab fa-facebook fa-2x"></i></a>
+                    <a href="http://instagram.com/" class="me-3"><i class="fab fa-instagram fa-2x"></i></a>
+                    <a href="https://x.com/" class="me-3"><i class="fab fa-twitter fa-2x"></i></a>
+                    <a href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-2x"></i></a>
+                </div>
+
+                <p class="text-muted">
+                    <i class="fas fa-phone"></i> +91 1800-123-4567
+                </p>
+                <p class="text-muted">
+                    <i class="fas fa-envelope"></i> support@rentkart.com
+                </p>
+            </div>
+        </div>
+
+        <hr class="bg-secondary">
+
+        <div class="text-center text-muted">
+            <p>&copy; 2026 RentKart. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

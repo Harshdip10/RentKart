@@ -1,0 +1,198 @@
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">My Rentals</h1>
+        <p class="text-muted">View and manage your active rentals</p>
+    </div>
+
+    <div ng-if="rentals.length === 0" class="text-center py-5">
+        <div class="empty-state-icon mb-4">
+            <i class="fas fa-box-open fa-5x text-muted"></i>
+        </div>
+        <h3 class="mb-3">No Active Rentals</h3>
+        <p class="text-muted mb-4">You haven't rented any products yet. Start exploring our collection!</p>
+        <a href="#!/categories" class="btn btn-primary btn-lg">
+            <i class="fas fa-shopping-bag me-2"></i>Browse Products
+        </a>
+    </div>
+
+    <div ng-if="rentals.length > 0">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <h4>Active Rentals ({{rentals.length}})</h4>
+            </div>
+            <div class="col-md-6 text-end">
+                <a href="#!/categories" class="btn btn-outline-primary">
+                    <i class="fas fa-plus me-2"></i>Rent More Products
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 mb-4" ng-repeat="rental in rentals">
+                <div class="card rental-card shadow-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 mb-3 mb-lg-0">
+                                <div class="d-flex align-items-start">
+                                    <div class="rental-icon-wrapper me-3">
+                                        <i class="fas fa-box fa-3x text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold mb-2">{{rental.product_name}}</h5>
+                                            <div class="mb-2">
+                                            <span class="badge bg-success me-2">
+                                                <i class="fas fa-check-circle me-1"></i>Active
+                                            </span>
+                                            <span class="badge bg-info">
+                                                {{rental.plan_name}}
+                                                </span>
+                                            </div>
+                                            <p class="text-muted mb-1">
+                                                <i class="fas fa-calendar-alt me-2"></i>
+                                                <strong>Duration:</strong> {{rental.duration}} Months
+                                            </p>
+                                            <p class="text-muted mb-1">
+                                                <i class="fas fa-rupee-sign me-2"></i>
+                                                <strong>Monthly Rent:</strong> ₹{{rental.price | number:0}}
+                                            </p>
+                                            <p class="text-muted mb-1">
+                                                <i class="fas fa-clock me-2"></i>
+                                                <strong>Rented on:</strong> {{rental.order_date | date:'dd MMM yyyy'}}
+                                            </p>
+                                            <p class="text-muted mb-0">
+                                                <i class="fas fa-calendar-check me-2 text-success"></i>
+                                                <strong>Rented till:</strong> {{calculateEndDate(rental.order_date, rental.duration) | date:'dd MMM yyyy'}}
+                                            </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                 <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-center p-3 bg-light rounded">
+                                            <small class="text-muted d-block mb-1">Total Paid</small>
+                                            <h4 class="text-primary mb-0">₹{{ calculateTotalWithTax(rental) | number:0 }}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-center p-3 bg-light rounded">
+                                            <small class="text-muted d-block mb-1">Next Payment</small>
+                                            <p class="mb-0 fw-bold">Auto-deducted</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary btn-sm" ng-click="viewInvoice(rental, $index)">
+                                        <i class="fas fa-receipt me-2"></i>View Invoice
+                                            </button>
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-headset me-2"></i>Contact Support
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm" ng-click="cancelRental(rental)">
+                                        <i class="fas fa-times-circle me-2"></i>Cancel Rental
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <small class="text-muted">Rental Period Progress</small>
+                            <small class="text-muted">{{calculateProgress(rental.order_date, rental.duration) | number:0}}% completed</small>
+                        </div>
+                        <div class="progress" style="height: 8px; background-color: #e9ecef;">
+                        <div class="progress-bar bg-primary" 
+                                role="progressbar" 
+                                ng-style="{'width': calculateProgress(rental.order_date, rental.duration) + '%'}"
+                                aria-valuenow="{{calculateProgress(rental.order_date, rental.duration)}}" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card border-0 bg-light">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-4 text-center">Your Rental Benefits</h5>
+                        <div class="row">
+                            <div class="col-md-3 col-sm-6 mb-3 text-center">
+                                <i class="fas fa-truck fa-3x text-primary mb-3"></i>
+                                <h6 class="fw-bold">Free Delivery</h6>
+                                <p class="text-muted small mb-0">Doorstep delivery included</p>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3 text-center">
+                                <i class="fas fa-tools fa-3x text-primary mb-3"></i>
+                                <h6 class="fw-bold">Free Maintenance</h6>
+                                <p class="text-muted small mb-0">24/7 support available</p>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3 text-center">
+                                <i class="fas fa-exchange-alt fa-3x text-primary mb-3"></i>
+                                <h6 class="fw-bold">Easy Upgrades</h6>
+                                <p class="text-muted small mb-0">Switch products anytime</p>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3 text-center">
+                                <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                                <h6 class="fw-bold">Damage Protection</h6>
+                                <p class="text-muted small mb-0">Covered under warranty</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card border-primary">
+                    <div class="card-body text-center">
+                        <h5 class="fw-bold mb-3">Need Help with Your Rentals?</h5>
+                        <p class="text-muted mb-3">Our support team is here to help you 24/7</p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="#!/contact" class="btn btn-primary">
+                                <i class="fas fa-envelope me-2"></i>Contact Support
+                            </a>
+                            <a href="tel:+911800123456" class="btn btn-outline-primary">
+                                <i class="fas fa-phone me-2"></i>Call Us
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.rental-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid #4A90E2;
+}
+
+.rental-card:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.rental-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(74, 144, 226, 0.1);
+    border-radius: 10px;
+}
+
+.empty-state-icon {
+    padding: 40px;
+    background: rgba(0,0,0,0.02);
+    border-radius: 50%;
+    display: inline-block;
+}
+</style>

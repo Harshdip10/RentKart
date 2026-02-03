@@ -1,0 +1,76 @@
+<div class="auth-container">
+    <div class="text-center mb-4">
+        <i class="fas fa-user-circle fa-5x text-primary mb-3"></i>
+        <h2>Welcome Back</h2>
+        <p class="text-muted">Login to your account</p>
+    </div>
+
+    <div ng-if="errorMessage" class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        {{errorMessage}}
+    </div>
+
+    <form name="loginForm" ng-submit="login()" novalidate>
+        <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                <input type="email" 
+                       class="form-control" 
+                       ng-model="credentials.email" 
+                       name="email"
+                       placeholder="Enter your email"
+                       required>
+            </div>
+            <div ng-show="loginForm.email.$touched && loginForm.email.$invalid" class="text-danger small mt-1">
+                Please enter a valid email address
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input type="password" 
+                       class="form-control" 
+                       ng-model="credentials.password" 
+                       name="password"
+                       placeholder="Enter your password"
+                       required>
+            </div>
+            <div ng-show="loginForm.password.$touched && loginForm.password.$invalid" class="text-danger small mt-1">
+                Password is required
+            </div>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe">
+            <label class="form-check-label" for="rememberMe">Remember me</label>
+        </div>
+
+        <button type="submit" 
+                class="btn btn-primary w-100 mb-3" 
+                ng-disabled="loginForm.$invalid || loading">
+            <span ng-if="!loading">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+            </span>
+            <span ng-if="loading">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Logging in...
+            </span>
+        </button>
+
+        <div class="text-center">
+            <a href="#!/forgot-password" class="text-muted small">Forgot Password?</a>
+        </div>
+    </form>
+
+    <hr class="my-4">
+
+    <div class="text-center">
+        <p class="text-muted mb-2">Don't have an account?</p>
+        <a href="#!/register" class="btn btn-outline-primary w-100">
+            <i class="fas fa-user-plus me-2"></i>Create Account
+        </a>
+    </div>
+</div>

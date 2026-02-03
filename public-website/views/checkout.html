@@ -1,0 +1,650 @@
+<!-- <div class="container py-5" ng-controller="CheckoutController"> -->
+    <!-- Breadcrumb -->
+    <!-- <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#!/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#!/categories">Categories</a></li>
+            <li class="breadcrumb-item active">Checkout</li>
+        </ol>
+    </nav> -->
+
+    <!-- <div class="text-center mb-5">
+        <h1 class="fw-bold">Checkout</h1>
+        <p class="text-muted">Review your order and complete the rental</p>
+    </div> -->
+
+    <!-- Debug Info (Remove after testing) -->
+    <!-- <div class="alert alert-info" style="margin-bottom: 20px;">
+        <strong>Debug:</strong> Selected Plan: {{selectedPlan || 'None'}} | Duration: {{selectedDuration || 0}} months
+    </div> -->
+
+    <!-- Loading State -->
+    <!-- <div ng-show="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div> -->
+
+    <!-- Checkout Content -->
+    <!-- <div ng-show="!loading" class="row"> -->
+        <!-- Order Summary -->
+        <!-- <div class="col-lg-8 mb-4"> -->
+            <!-- Customer Details -->
+            <!-- <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-user me-2"></i>Customer Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Full Name</label>
+                            <p class="mb-0">{{customer.name}}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Email</label>
+                            <p class="mb-0">{{customer.email}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Delivery Address</label>
+                            <p class="mb-0 text-muted">Address will be confirmed after order placement</p>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Product Details -->
+            <!-- <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-box me-2"></i>Product Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-3 mb-3 mb-md-0">
+                            <img ng-if="product.image" 
+                                 ng-src="{{product.image}}" 
+                                 class="img-fluid rounded" 
+                                 alt="{{product.name}}">
+                            <div ng-if="!product.image" class="checkout-product-placeholder">
+                                <i class="fas fa-image fa-3x text-muted"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <h4 class="fw-bold mb-2">{{product.name}}</h4>
+                            <p class="text-muted mb-2">{{product.description}}</p>
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-success me-2">Available</span>
+                                <span class="text-muted">Base Price: ₹{{product.price}}/month</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Subscription Plans -->
+            <!-- <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Choose Subscription Plan</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3"> -->
+                        <!-- Monthly Plan -->
+                        <!-- <div class="col-md-6 col-lg-3">
+                            <div class="subscription-plan-card" 
+                                 ng-class="{'selected': selectedPlan === 'Monthly'}"
+                                 ng-click="selectPlan('Monthly', 1)">
+                                <div class="plan-header">
+                                    <h6 class="fw-bold mb-1">Monthly</h6>
+                                    <small class="text-muted">1 Month</small>
+                                </div>
+                                <div class="plan-price">
+                                    <h4 class="mb-0">₹{{product.price}}</h4>
+                                    <small>per month</small>
+                                </div>
+                                <div class="plan-total">
+                                    <small>Total: ₹{{product.price}}</small>
+                                </div>
+                                <div class="plan-check" ng-show="selectedPlan === 'Monthly'">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <!-- Quarterly Plan -->
+                        <!-- <div class="col-md-6 col-lg-3">
+                            <div class="subscription-plan-card" 
+                                 ng-class="{'selected': selectedPlan === 'Quarterly'}"
+                                 ng-click="selectPlan('Quarterly', 3)">
+                                <div class="plan-badge">
+                                    <span class="badge bg-info">Save 5%</span>
+                                </div>
+                                <div class="plan-header">
+                                    <h6 class="fw-bold mb-1">Quarterly</h6>
+                                    <small class="text-muted">3 Months</small>
+                                </div>
+                                <div class="plan-price">
+                                    <h4 class="mb-0">₹{{product.price * 0.95 | number:0}}</h4>
+                                    <small>per month</small>
+                                </div>
+                                <div class="plan-total">
+                                    <small>Total: ₹{{product.price * 3 * 0.95 | number:0}}</small>
+                                </div>
+                                <div class="plan-check" ng-show="selectedPlan === 'Quarterly'">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <!-- Half-Yearly Plan -->
+                        <!-- <div class="col-md-6 col-lg-3">
+                            <div class="subscription-plan-card popular" 
+                                 ng-class="{'selected': selectedPlan === 'Half-Yearly'}"
+                                 ng-click="selectPlan('Half-Yearly', 6)">
+                                <div class="plan-badge">
+                                    <span class="badge bg-warning text-dark">Most Popular</span>
+                                </div>
+                                <div class="plan-header">
+                                    <h6 class="fw-bold mb-1">Half-Yearly</h6>
+                                    <small class="text-muted">6 Months</small>
+                                </div>
+                                <div class="plan-price">
+                                    <h4 class="mb-0">₹{{product.price * 0.90 | number:0}}</h4>
+                                    <small>per month</small>
+                                </div>
+                                <div class="plan-total">
+                                    <small>Total: ₹{{product.price * 6 * 0.90 | number:0}}</small>
+                                </div>
+                                <div class="plan-check" ng-show="selectedPlan === 'Half-Yearly'">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <!-- Yearly Plan -->
+                        <!-- <div class="col-md-6 col-lg-3">
+                            <div class="subscription-plan-card" 
+                                 ng-class="{'selected': selectedPlan === 'Yearly'}"
+                                 ng-click="selectPlan('Yearly', 12)">
+                                <div class="plan-badge">
+                                    <span class="badge bg-success">Save 15%</span>
+                                </div>
+                                <div class="plan-header">
+                                    <h6 class="fw-bold mb-1">Yearly</h6>
+                                    <small class="text-muted">12 Months</small>
+                                </div>
+                                <div class="plan-price">
+                                    <h4 class="mb-0">₹{{product.price * 0.85 | number:0}}</h4>
+                                    <small>per month</small>
+                                </div>
+                                <div class="plan-total">
+                                    <small>Total: ₹{{product.price * 12 * 0.85 | number:0}}</small>
+                                </div>
+                                <div class="plan-check" ng-show="selectedPlan === 'Yearly'">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success mt-4" ng-show="selectedPlan">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <strong>Selected Plan:</strong> {{selectedPlan}} ({{selectedDuration}} months)
+                    </div>
+
+                    <div class="alert alert-warning mt-3" ng-show="!selectedPlan">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Please select a subscription plan to continue
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Plan Benefits -->
+            <!-- <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-star me-2"></i>What's Included</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <i class="fas fa-check text-success me-2"></i>Free delivery
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <i class="fas fa-check text-success me-2"></i>Free installation
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <i class="fas fa-check text-success me-2"></i>24/7 maintenance support
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <i class="fas fa-check text-success me-2"></i>Easy returns
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <i class="fas fa-check text-success me-2"></i>Damage protection
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <i class="fas fa-check text-success me-2"></i>Upgrade options
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Order Summary Sidebar -->
+        <!-- <div class="col-lg-4">
+            <div class="card shadow-sm sticky-top" style="top: 100px;">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="fas fa-receipt me-2"></i>Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Product</span>
+                        <strong>{{product.name}}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3" ng-show="selectedPlan">
+                        <span>Plan</span>
+                        <strong>{{selectedPlan}}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3" ng-show="selectedPlan">
+                        <span>Monthly Rent</span>
+                        <strong>₹{{calculateMonthlyPrice() | number:0}}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3" ng-show="selectedPlan">
+                        <span>Duration</span>
+                        <strong>{{selectedDuration}} months</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Delivery</span>
+                        <strong class="text-success">FREE</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Installation</span>
+                        <strong class="text-success">FREE</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3" ng-show="selectedPlan && getDiscount() > 0">
+                        <span class="text-success">Discount</span>
+                        <strong class="text-success">- ₹{{getDiscount() | number:0}}</strong>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-3">
+                        <h5 class="mb-0">Total Amount</h5>
+                        <h5 class="mb-0 text-primary">₹{{calculateTotal() | number:0}}</h5>
+                    </div>
+                    <small class="text-muted d-block mb-4">
+                        <i class="fas fa-shield-alt me-1"></i>
+                        100% Safe & Secure Payment
+                    </small>
+
+                    <button class="btn btn-primary w-100 mb-3" 
+                            ng-click="confirmOrder()"
+                            ng-disabled="!selectedPlan || processing">
+                        <span ng-show="!processing">
+                            <i class="fas fa-check-circle me-2"></i>Confirm Order
+                        </span>
+                        <span ng-show="processing">
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                            Processing...
+                        </span>
+                    </button>
+
+                    <a href="#!/product-detail/{{product.id}}" class="btn btn-outline-secondary w-100">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Product
+                    </a>
+                </div>
+
+                <div class="card-footer bg-light">
+                    <div class="text-center">
+                        <small class="text-muted">
+                            <i class="fas fa-lock me-1"></i>
+                            Your payment information is encrypted
+                        </small>
+                    </div>
+                </div>
+            </div>
+ -->
+            <!-- Benefits -->
+            <!-- <div class="card mt-4 shadow-sm">
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3">Why Rent with Us?</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="fas fa-truck text-primary me-2"></i>
+                            <small>Free doorstep delivery</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-tools text-primary me-2"></i>
+                            <small>Hassle-free maintenance</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-exchange-alt text-primary me-2"></i>
+                            <small>Easy upgrade options</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-undo text-primary me-2"></i>
+                            <small>Flexible return policy</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.checkout-product-placeholder {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.subscription-plan-card {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    background: white;
+    height: 100%;
+}
+
+.subscription-plan-card:hover {
+    border-color: #0d6efd;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+    transform: translateY(-2px);
+}
+
+.subscription-plan-card.selected {
+    border-color: #0d6efd;
+    background: #f0f7ff;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+}
+
+.subscription-plan-card.popular {
+    border-color: #ffc107;
+}
+
+.plan-badge {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+}
+
+.plan-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.plan-price {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.plan-price h4 {
+    color: #0d6efd;
+    font-weight: bold;
+}
+
+.plan-total {
+    text-align: center;
+    padding-top: 10px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.plan-check {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    color: #0d6efd;
+}
+
+@media (max-width: 991px) {
+    .subscription-plan-card {
+        margin-bottom: 15px;
+    }
+}
+</style> -->
+
+<div class="container py-5" ng-controller="CheckoutController">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#!/">Home</a></li>
+            <li class="breadcrumb-item"><a href="#!/categories">Categories</a></li>
+            <li class="breadcrumb-item active">Checkout</li>
+        </ol>
+    </nav>
+
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Checkout</h1>
+        <p class="text-muted">Review your order and complete the rental</p>
+    </div>
+
+    <div ng-show="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div ng-show="!loading" class="row">
+        <div class="col-lg-8 mb-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-user me-2"></i>Customer Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Full Name</label>
+                            <p class="mb-0">{{currentUser.name}}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Email</label>
+                            <p class="mb-0">{{currentUser.email}}</p>
+                        </div>
+                    
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Delivery Address</label>
+                            <p class="mb-0 text-muted">Address will be confirmed after order placement</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-box me-2"></i>Product Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-3 mb-3 mb-md-0">
+                            <div class="checkout-product-placeholder">
+                                <!-- <i class="fas fa-image fa-3x text-muted"></i> -->
+                                 <div class="col-lg-6 mb-4">
+            <div class="product-detail-image-wrapper">
+                <img ng-if="product.image" 
+                     ng-src="{{product.image}}" 
+                     class="img-fluid rounded shadow" 
+                     alt="{{product.name}}">
+                <div ng-if="!product.image" class="product-detail-placeholder">
+                    <i class="fas fa-image fa-10x text-muted"></i>
+                </div>
+            </div>
+        </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-9">
+                            <h4 class="fw-bold mb-2">{{product.name}}</h4>
+                            <p class="text-muted mb-2">{{product.description}}</p>
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-success me-2">Available</span>
+                                <span class="text-muted text-decoration-line-through me-2">MRP: ₹{{product.mrp}}</span>
+                                <span class="fw-bold text-primary">Monthly: ₹{{calculateRent(product.mrp, 'monthly') | number:0}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Choose Subscription Plan</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="subscription-plan-card" 
+                                 ng-class="{'selected': selectedPlan.type === 'monthly'}"
+                                 ng-click="selectPlan({id: 1, name: 'Monthly Plan', type: 'monthly', duration: 1})">
+                                <div class="plan-header">
+                                    <h6 class="fw-bold mb-1">Monthly</h6>
+                                    <small class="text-muted">1 Month</small>
+                                </div>
+                                <div class="plan-price">
+                                    <h4 class="mb-0">₹{{calculateRent(product.mrp, 'monthly') | number:0}}</h4>
+                                    <small>per month</small>
+                                </div>
+                                <div class="plan-total">
+                                    <small>Total: ₹{{calculateRent(product.mrp, 'monthly') | number:0}}</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-3">
+                            <div class="subscription-plan-card" 
+                                 ng-class="{'selected': selectedPlan.type === 'quarterly'}"
+                                 ng-click="selectPlan({id: 2, name: 'Quarterly Plan', type: 'quarterly', duration: 3})">
+                                <div class="plan-badge"><span class="badge bg-info">3% Off</span></div>
+                                <div class="plan-header">
+                                    <h6 class="fw-bold mb-1">Quarterly</h6>
+                                    <small class="text-muted">3 Months</small>
+                                </div>
+                                <div class="plan-price">
+                                    <h4 class="mb-0">₹{{calculateRent(product.mrp, 'quarterly') | number:0}}</h4>
+                                    <small>per month</small>
+                                </div>
+                                <div class="plan-total">
+                                    <small>Total: ₹{{calculateRent(product.mrp, 'quarterly') * 3 | number:0}}</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-3">
+                            <div class="subscription-plan-card popular" 
+                                 ng-class="{'selected': selectedPlan.type === 'half-yearly'}"
+                                 ng-click="selectPlan({id: 3, name: 'Half-Yearly Plan', type: 'half-yearly', duration: 6})">
+                                <div class="plan-badge"><span class="badge bg-warning text-dark">Most Popular</span></div>
+                                <div class="plan-header">
+                                    <h6 class="fw-bold mb-1">6 Months</h6>
+                                    <small class="text-muted">Half-Yearly</small>
+                                </div>
+                                <div class="plan-price">
+                                    <h4 class="mb-0">₹{{calculateRent(product.mrp, 'half-yearly') | number:0}}</h4>
+                                    <small>per month</small>
+                                </div>
+                                <div class="plan-total">
+                                    <small>Total: ₹{{calculateRent(product.mrp, 'half-yearly') * 6 | number:0}}</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-3">
+                            <div class="subscription-plan-card" 
+                                 ng-class="{'selected': selectedPlan.type === 'annually'}"
+                                 ng-click="selectPlan({id: 4, name: 'Annual Plan', type: 'annually', duration: 12})">
+                                <div class="plan-badge"><span class="badge bg-success">5% Off</span></div>
+                                <div class="plan-header">
+                                    <h6 class="fw-bold mb-1">Yearly</h6>
+                                    <small class="text-muted">12 Months</small>
+                                </div>
+                                <div class="plan-price">
+                                    <h4 class="mb-0">₹{{calculateRent(product.mrp, 'annually') | number:0}}</h4>
+                                    <small>per month</small>
+                                </div>
+                                <div class="plan-total">
+                                    <small>Total: ₹{{calculateRent(product.mrp, 'annually') * 12 | number:0}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm sticky-top" style="top: 100px;">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="fas fa-receipt me-2"></i>Order Summary</h5>
+                </div>
+                <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Product</span>
+                            <strong>{{product.name}}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2" ng-show="selectedPlan">
+                            <span>Plan Duration</span>
+                            <strong>{{selectedPlan.duration}} Months</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2" ng-show="selectedPlan">
+                            <span>Monthly Rent</span>
+                            <strong>₹{{calculateRent(product.mrp, selectedPlan.type) | number:0}}</strong>
+                        </div>
+                        
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal</span>
+                            <span>₹{{calculateSubtotal() | number:2}}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>
+                                <strong>GST (18%)</strong><br>
+                                <small class="text-muted">CGST: 9% | SGST: 9%</small>
+                            </span>
+                            <span>₹{{calculateGST() | number:2}}</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-3 mb-4 p-2 bg-light rounded">
+                            <h5 class="mb-0">Grand Total</h5>
+                            <h5 class="mb-0 text-primary">₹{{calculateGrandTotal() | number:2}}</h5>
+                        </div>
+
+                        <!-- <div class="mb-3 text-end" ng-show="selectedPlan">
+                            <small class="text-muted d-block">Amount in words:</small>
+                            <small class="fw-bold">Rupees {{calculateGrandTotal() | number:0}} Only</small>
+                        </div> -->
+                        <button class="btn btn-primary w-100 py-2 mb-3" 
+                                ng-click="confirmOrder()"
+                                ng-disabled="!selectedPlan">
+                            <i class="fas fa-check-circle me-2"></i>Confirm Rental
+                        </button>
+                        <a href="#!/product-detail/{{product.id}}" class="btn btn-outline-secondary w-100">Cancel</a>
+                    </div>            
+                </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Keeping your existing styles but ensuring selected state visibility */
+.subscription-plan-card {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    height: 100%;
+    position: relative;
+}
+.subscription-plan-card.selected {
+    border-color: #0d6efd;
+    background-color: #f8fbff;
+}
+.subscription-plan-card.popular { border-color: #ffc107; }
+.plan-badge { position: absolute; top: -12px; right: 10px; }
+.plan-price h4 { color: #0d6efd; font-weight: bold; }
+</style>

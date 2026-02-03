@@ -1,0 +1,12 @@
+Django>=4.2.0
+djangorestframework>=3.14.0
+django-cors-headers>=4.0.0
+requests>=2.31.0
+python-telegram-bot>=20.0
+Pillow
+
+# Optional but recommended
+python-decouple>=3.8  # For environment variables
+redis>=4.5.0  # For production cache
+django-redis>=5.2.0  # Redis cache backend
+ 

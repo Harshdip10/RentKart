@@ -1,0 +1,122 @@
+<div class="auth-container">
+    <div class="text-center mb-4">
+        <i class="fas fa-user-plus fa-5x text-primary mb-3"></i>
+        <h2>Create Account</h2>
+        <p class="text-muted">Join RentKart today</p>
+    </div>
+
+    <div ng-if="errorMessage" class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        {{errorMessage}}
+    </div>
+
+    <form name="registerForm" ng-submit="register()" novalidate>
+        <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" 
+                   class="form-control" 
+                   ng-model="customer.name" 
+                   name="name"
+                   placeholder="Enter your full name"
+                   required>
+            <div ng-show="registerForm.name.$touched && registerForm.name.$invalid" class="text-danger small mt-1">
+                Name is required
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input type="email" 
+                   class="form-control" 
+                   ng-model="customer.email" 
+                   name="email"
+                   placeholder="Enter your email"
+                   required>
+            <div ng-show="registerForm.email.$touched && registerForm.email.$invalid" class="text-danger small mt-1">
+                Valid email is required
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" 
+                   class="form-control" 
+                   ng-model="customer.phone" 
+                   name="phone"
+                   placeholder="Enter 10 digit phone number"
+                   pattern="[0-9]{10}"
+                   required>
+            <div ng-show="registerForm.phone.$touched && registerForm.phone.$invalid" class="text-danger small mt-1">
+                Valid 10-digit phone number is required
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Address</label>
+            <textarea class="form-control" 
+                      ng-model="customer.address" 
+                      name="address"
+                      rows="2"
+                      placeholder="Enter your address"
+                      required></textarea>
+            <div ng-show="registerForm.address.$touched && registerForm.address.$invalid" class="text-danger small mt-1">
+                Address is required
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" 
+                   class="form-control" 
+                   ng-model="customer.password" 
+                   name="password"
+                   placeholder="Minimum 8 characters"
+                   minlength="8"
+                   required>
+            <div ng-show="registerForm.password.$touched && registerForm.password.$invalid" class="text-danger small mt-1">
+                Password must be at least 8 characters
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" 
+                   class="form-control" 
+                   ng-model="customer.confirmPassword" 
+                   name="confirmPassword"
+                   placeholder="Re-enter password"
+                   required>
+            <div ng-show="customer.password !== customer.confirmPassword && registerForm.confirmPassword.$touched" class="text-danger small mt-1">
+                Passwords do not match
+            </div>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+            <label class="form-check-label small" for="agreeTerms">
+                I agree to the Terms & Conditions and Privacy Policy
+            </label>
+        </div>
+
+        <button type="submit" 
+                class="btn btn-primary w-100 mb-3" 
+                ng-disabled="registerForm.$invalid || loading || customer.password !== customer.confirmPassword">
+            <span ng-if="!loading">
+                <i class="fas fa-user-plus me-2"></i>Create Account
+            </span>
+            <span ng-if="loading">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Creating account...
+            </span>
+        </button>
+    </form>
+
+    <hr class="my-4">
+
+    <div class="text-center">
+        <p class="text-muted mb-2">Already have an account?</p>
+        <a href="#!/login" class="btn btn-outline-primary w-100">
+            <i class="fas fa-sign-in-alt me-2"></i>Login
+        </a>
+    </div>
+</div>
